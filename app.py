@@ -45,5 +45,10 @@ active_station_data = session.query(Measurement.tobs).filter(Measurement.station
 def tobs():
     return jsonify(active_station_data)
 
+@app.route("/api/v1.0/<start>")
+def start(start):
+    start_dt = dt.datetime.strptime(start, '%Y-%m-%d')
+    start_min = session.query(func.min(Measurement.tobs)).filter(Measurement.date > start_dt).all()
+    return f'The minimum temperature after {start} was {start_min}.'
 if __name__ == "__main__":
     app.run(debug=True)
