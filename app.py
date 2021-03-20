@@ -51,7 +51,9 @@ def tobs():
 def start_search(start):
     session = Session(engine)
     start_min = session.query(func.min(Measurement.tobs)).filter(Measurement.date >= start).all()
-    return f'The minimum temperature from {start} to present was {start_min[0][0]}'
+    start_max = session.query(func.max(Measurement.tobs)).filter(Measurement.date >= start).all()
+    start_avg = session.query(func.avg(Measurement.tobs)).filter(Measurement.date >= start).all()
+    return f'The minimum temperature from {start} to present was {start_min[0][0]}. The maximum temperature was {start_max[0][0]}. The average temperature was {start_avg[0][0]}'
     session.close()
 
 @app.route("/api/v1.0/<start>/<end>")
