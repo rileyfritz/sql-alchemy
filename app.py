@@ -60,7 +60,9 @@ def start_search(start):
 def start_end_search(start, end):
     session = Session(engine)
     start_end_min = session.query(func.min(Measurement.tobs)).filter(Measurement.date >= start).filter(Measurement.date < end).all()
-    return f'The minimum temperature between {start} and {end} was {start_end_min[0][0]}'
+    start_end_max = session.query(func.max(Measurement.tobs)).filter(Measurement.date >= start).filter(Measurement.date < end).all()
+    start_end_avg = session.query(func.avg(Measurement.tobs)).filter(Measurement.date >= start).filter(Measurement.date < end).all()
+    return f'The minimum temperature from {start} to {end} was {start_end_min[0][0]}. The maximum temperature was {start_end_max[0][0]}. The average temperature was {start_end_avg[0][0]}'
     session.close()
 
 if __name__ == "__main__":
